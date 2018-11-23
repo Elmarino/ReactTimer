@@ -34,7 +34,7 @@ class App extends Component {
             !clicked && (
               <div className="buttons">
                 <button className="button_choose" 
-                  onClick = { ()=>this._setTime('Pates déjà cuites', 180)}
+                  onClick = { ()=>this._setTime('Pates', 180)}
                 >
                   Lancer le chrono des pates
                 </button>
