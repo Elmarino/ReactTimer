@@ -40,7 +40,7 @@ class App extends Component {
                 </button>
 
                 <button className="button_choose" 
-                  onClick = {()=>this._setTime('Oeufs déjà durs', 10)}
+                  onClick = {()=>this._setTime('Oeufs', 10)}
                 >
                   Lancer le chrono des oeufs
                 </button>
