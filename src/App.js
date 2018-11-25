@@ -4,60 +4,101 @@ import './App.css';
 import Timer from './Timer';
 
 class App extends Component {
-  constructor(){
-    super()
+  constructor(props) {
+    super(props);
     this.state = {
-      elementName: null,
-      timeValue : null,
-      clicked: false
-    }
+      minutes: 0,
+      seconds: 0,
+      label: '',
+      timers: []
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  _setTime(name, time){
+  handleFormSubmit(event) {
+    event.preventDefault();
+    let newTimer = {
+      'label': this.state.label,
+      'minutes': this.state.minutes,
+      'seconds': this.state.seconds
+    }
+
     this.setState({
-      elementName: name,
-      timeValue: time,
-      clicked: true
+      timers: [...this.state.timers, newTimer]
     })
+
+    console.log(this.state.timers)
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    let value = null
+    const isValid = target.validity.valid
+    const name = target.name;
+    isValid ? value = target.value: value = this.state[name];
+
+    this.setState({
+      [name]: value
+    });
   }
 
   render() {
 
-    const { elementName, timeValue, clicked } = this.state
+    const allTimers = this.state.timers.map((timer, i)=>{
+      return(
+        <div className='all-timer' key={i}>
+          <Timer titleElement={timer.label} timeMinutes={timer.minutes}  timeSeconds={timer.seconds} timeElement={this.state.timeValue}/>
+        </div>
+      )
+    })
+    
 
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          {
-            // Visible if we have not clicked
-            !clicked && (
-              <div className="buttons">
-                <button className="button_choose" 
-                  onClick = { ()=>this._setTime('Pates', 180)}
-                >
-                  Lancer le chrono des pates
-                </button>
-
-                <button className="button_choose" 
-                  onClick = {()=>this._setTime('Oeufs', 10)}
-                >
-                  Lancer le chrono des oeufs
-                </button>
-
-                <button className="button_choose" 
-                  onClick = {()=>this._setTime('Pommes sautées', 600)}
-                >
-                  Lancer le chrono pour la compote de pomme
-                </button>
-              </div>
-            )
-          }
-          { 
-            //Display timer only if we have the 2 data needed
-            (elementName && timeValue) && <Timer titleElement={this.state.elementName} timeElement={this.state.timeValue}/> 
-          }
-        </header>
+      <div>
+        <h1>Vos minuteurs</h1>
+        <div>
+          <form onSubmit={this.handleFormSubmit} className='minuteur-timer'>
+            <div>
+              <label>
+                Label du minuteur:
+                <input
+                  name="label"
+                  type="text"
+                  value={this.state.label}
+                  onChange={this.handleInputChange}
+                  required />
+              </label>
+              <label>
+                Minutes:
+                <input
+                  name="minutes"
+                  type="text"
+                  pattern="[0-9]*"
+                  value={this.state.minutes}
+                  onChange={this.handleInputChange}
+                  required />
+              </label>
+              <br />
+              <label>
+                Secondes:
+                <input
+                  name="seconds"
+                  type="text"
+                  pattern="[0-9]*"
+                  value={this.state.seconds}
+                  onChange={this.handleInputChange}
+                  required />
+              </label>
+              <br/>
+            </div>
+            <input type="submit" value="Créer un minuteur" />            
+          </form>
+        </div>
+        <div className='wrapper-timers'>
+          { allTimers }
+        </div>
       </div>
     );
   }

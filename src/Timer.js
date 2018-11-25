@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
-
+import logo from './logo.svg';
+import './App.css';
 
 class Timer extends Component {
     constructor(props){
       super(props)
       this.state = {
-        seconds: props.timeElement,
+        seconds: null,
         timeLeft: {},
         ended: null,
         message: null,
         nameElement: props.titleElement
       }
 
+      let minutes = parseInt(props.timeMinutes)*60
+      let seconds = parseInt(props.timeSeconds)
+
       // initialize values related to components
-      this.initialSeconds = props.timeElement
+      this.initialSeconds = minutes + seconds
       this.timer = null
 
       // Bind this to our functions
@@ -55,13 +59,13 @@ class Timer extends Component {
 
     // Function to start & pause (not done) timer
     _startPauseTimer(){
-      if (this.timer == null) {
+      if (this.timer == null && (this.state.seconds !== 0)) {
         this.timer = setInterval(this._countDown, 1000)
         this.setState({
           ended: false
         })
       } else{
-        // If pause
+        alert('Vous n\'avez pas réglé de temps pour ce minuteur')
       }
       this._isThisTheEnd()
     }
@@ -105,9 +109,10 @@ class Timer extends Component {
         
         return (
             <div>
-            <p>{this.state.nameElement}</p>
-            <p>{this.state.timeLeft.m} minutes<br/>{this.state.timeLeft.s} secondes</p>
-            {this.state.message}
+              <img src={logo} className="App-logo" alt="logo" />            
+              <p>{this.state.nameElement}</p>
+              <p>{this.state.timeLeft.m} minutes<br/>{this.state.timeLeft.s} secondes</p>
+              {this.state.message}
             </div>
         );
     }
