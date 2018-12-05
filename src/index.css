@@ -12,3 +12,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.formulaire{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
